@@ -15,5 +15,6 @@ module.exports = function(server){
 		}
 		return next();
 	});
+	routerInstance.use(passport.authenticate('jwt', {session: false}));
 	return routerInstance.applyRoutes(server, "/api");
 }

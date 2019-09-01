@@ -2,7 +2,11 @@
 
 let passport = require("passport");
 let LocalStrategy = require("passport-local").Strategy;
+const passportJWT = require("passport-jwt");
 let User = require("../../../models/user");
+
+const JWTStrategy   = passportJWT.Strategy;
+const ExtractJWT = passportJWT.ExtractJwt;
 
 module.exports = function() {
 	passport.use(new LocalStrategy({
@@ -55,4 +59,21 @@ module.exports = function() {
 			});
 		});
 	}));
-};
+
+	passport.use(new JWTStrategy({
+			jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+			secretOrKey   : 'your_jwt_secret'
+		},
+		function (jwtPayload, cb) {
+
+			//find the user in db if needed
+			console.log("payload", jwtPayload)
+			return User.findOne({_id:jwtPayload._id})
+				.then(user => {
+					return cb(null, user);
+				})
+				.catch(err => {
+					return cb(err);
+				});
+		}
+	));};
