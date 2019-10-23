@@ -13,7 +13,6 @@ module.exports = function(server){
 		validation:	{
 			schema:{
 				body: Joi.object().keys({
-					username: Joi.string().alphanum().min(3).max(30).required(),
 					fullName: Joi.string().min(3).max(40).required(),
 					password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/).required(),
 					email: Joi.string().email({ minDomainSegments: 2, minDomainAtoms:2 }).required()
@@ -23,17 +22,17 @@ module.exports = function(server){
 			let user = new User({
 				fullName: req.body.fullName.trim(),
 				email: req.body.email.trim(),
-				username: req.body.username.trim(),
 				password: req.body.password.trim(),
 				roles: [C.ROLE_USER],
 				provider: "local"
 			});
 			user.save(async function(err, user) {
-				if (err && err.code === 11000){
+				if (err){
 					console.log(err);
 					res.json(503, err);
 					return next();
 				}
+				console.log("user", user, err)
 				await sendVerificationMail(user);
 				delete user.password;
 				delete user.verifyToken;

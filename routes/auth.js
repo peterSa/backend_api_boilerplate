@@ -10,9 +10,12 @@ module.exports = function(server){
 	routerInstance.post("/local", async function(req, res, next){
 		if (req.body.email && req.body.password){
 			passport.authenticate("local", async (err, user, info) => {
-				if (!user || err){
-					return res.json(503, {msg: err});
+				if (err){
+					return res.json(500, {msg: "Wrong email or password"});
 
+				}
+				if (!user){
+					return res.json(503, {msg: "Wrong email or password"});
 				}
 				req.login(user, {session: false}, (err) => {
 					if (err) {

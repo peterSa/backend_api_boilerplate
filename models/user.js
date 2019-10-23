@@ -40,15 +40,15 @@ let UserSchema = new mongoose.Schema({
 		validate: [validateLocalStrategyProperty, "Please fill in your email"],
 		match: [/.+\@.+\..+/, "Please fill a valid email address"]
 	},
-	username: {
-		type: String,
-		unique: true,
-		index: true,
-		lowercase: true,
-		required: "Please fill in a username",
-		trim: true,
-		match: [/^[\w][\w\-\._\@]*[\w]$/, "Please fill a valid username"]
-	},
+	// username: {
+	// 	type: String,
+	// 	unique: true,
+	// 	index: true,
+	// 	lowercase: true,
+	// 	required: "Please fill in a username",
+	// 	trim: true,
+	// 	match: [/^[\w][\w\-\._\@]*[\w]$/, "Please fill a valid username"]
+	// },
 	password: {
 		type: String,
 		default: "",
