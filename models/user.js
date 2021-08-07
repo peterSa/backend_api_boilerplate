@@ -52,7 +52,8 @@ let UserSchema = new mongoose.Schema({
 	password: {
 		type: String,
 		default: "",
-		validate: [validateLocalStrategyPassword, "Password should be longer"]
+		validate: [validateLocalStrategyPassword, "Password should be longer"],
+		select: false
 	},
 	passwordLess: {
 		type: Boolean,

@@ -11,11 +11,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^3.0.8",
+    "bcrypt": "^5.0.8",
     "chalk": "^2.4.2",
     "client-sessions": "^0.8.0",
     "joi": "^14.3.1",
     "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
     "mongoose": "^5.13.5",
     "nodemailer": "^6.6.3",
     "passport": "^0.4.1",

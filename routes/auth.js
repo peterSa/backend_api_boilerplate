@@ -8,6 +8,7 @@ module.exports = function(server){
 	// add all routes registered in the router to this server instance
 // add a route like you would on a restify server instance
 	routerInstance.post("/local", async function(req, res, next){
+
 		if (req.body.email && req.body.password){
 			passport.authenticate("local", async (err, user, info) => {
 				if (err){

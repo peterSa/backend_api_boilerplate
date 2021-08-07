@@ -14,12 +14,19 @@ module.exports = function() {
 		passwordField: "password",
 		passReqToCallback : true
 	}, function(req, username, password, done) {
-		return User.findOne({
+		let query = User.findOne({
 			$or: [
 				{ "username": username},
 				{ "email": username}
 			]
-		}, function(err, user) {
+		})
+			.select('password')
+			.select('verified')
+			.select('status')
+			.select('passwordLess')
+			.select('fullName');
+
+		return query.exec(function(err, user) {
 			if (err)
 				return done(err);
 
@@ -44,17 +51,18 @@ module.exports = function() {
 					message: "PasswordlessAccountLeaveEmpty"
 				});
 
-			user.comparePassword(password, function(err, isMatch) {
+			user.comparePassword(password, async function (err, isMatch) {
 				if (err)
 					return done(err);
 
-				if (isMatch !== true)
+				if (isMatch !== true) {
 					return done(null, false, {
 						message: "InvalidPassword"
 					});
-
-				else
-					return done(null, user);
+				} else {
+					let userObjToReturn = await User.findOne({_id: user._id});
+					return done(null, userObjToReturn);
+				}
 
 			});
 		});
